@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embedded Font Converter</title>
+</head>
+
+<body>
+  <div id="inputs">
+    <input type="file" id="fontFile">
+    <div>
+      <label for="characters">Characters:</label>
+      <input type="text" id="characters">
+    </div>
+    <div>
+      <label for="fontSize">Font size (px):</label>
+      <input type="number" id="fontSize" value="32">
+    </div>
+    <div>
+      <label for="alphaThreshold">Alpha threshold:</label>
+      <input type="number" id="alphaThreshold" value="127" min="0" max="255">
+    </div>
+    <div>
+      <label for="fixedHeight">Fixed height:</label>
+      <input type="number" id="fixedHeight" value="0">
+    </div>
+    <div>
+      <label for="yOffset">Y offset:</label>
+      <input type="number" id="yOffset" value="0">
+    </div>
+    <div>
+      <label for="previewScale">Preview scale:</label>
+      <input type="number" id="previewScale" value="4">
+    </div>
+    <button id="render">Render</button>
+  </div>
+
+  <div id="previews"></div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
