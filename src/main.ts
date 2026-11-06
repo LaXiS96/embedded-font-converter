@@ -3,10 +3,12 @@ import './style.css';
 // TODO allow font selection from browser fonts?
 // TODO sequential mode: all characters in ascii range
 //      sparse mode: specified characters one by one
+// TODO from the previews it's not clear that the font is actually fixed width like Nimbus Sans' digits
 
 const padding = 1;
 
 const fontFileInput = document.getElementById('fontFile') as HTMLInputElement;
+const fontNameInput = document.getElementById('fontName') as HTMLInputElement;
 const charactersInput = document.getElementById('characters') as HTMLInputElement;
 const fontSizeInput = document.getElementById('fontSize') as HTMLInputElement;
 const alphaThresholdInput = document.getElementById('alphaThreshold') as HTMLInputElement;
@@ -16,7 +18,17 @@ const previewScaleInput = document.getElementById('previewScale') as HTMLInputEl
 const renderButton = document.getElementById('render') as HTMLButtonElement;
 const previewsDiv = document.getElementById('previews') as HTMLDivElement;
 
-fontFileInput.addEventListener('change', () => generate());
+let currentFont = '';
+
+fontFileInput.addEventListener('change', async () => {
+    await loadFont();
+    currentFont = 'DynamicFont';
+    generate();
+});
+fontNameInput.addEventListener('change', () => {
+    currentFont = fontNameInput.value;
+    generate();
+});
 charactersInput.addEventListener('change', () => generate());
 fontSizeInput.addEventListener('change', () => generate());
 alphaThresholdInput.addEventListener('change', () => generate());
@@ -26,8 +38,6 @@ previewScaleInput.addEventListener('change', () => generate());
 renderButton.addEventListener('click', () => generate());
 
 async function generate() {
-    await loadFont();
-
     // Deduplicate and sort chars
     const chars = [...new Set(charactersInput.value)].sort();
     charactersInput.value = chars.join('');
@@ -71,7 +81,7 @@ function getGlyph(character: string): Glyph {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d')!;
 
-    ctx.font = `${fontSize}px DynamicFont`;
+    ctx.font = `${fontSize}px ${currentFont}`;
     ctx.textBaseline = 'alphabetic';
 
     const metrics = ctx.measureText(character);
@@ -85,7 +95,7 @@ function getGlyph(character: string): Glyph {
 
     ctx.canvas.width = width;
     ctx.canvas.height = height;
-    ctx.font = `${fontSize}px DynamicFont`;
+    ctx.font = `${fontSize}px ${currentFont}`;
     ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = '#ffffff';
     ctx.clearRect(0, 0, width, height);
