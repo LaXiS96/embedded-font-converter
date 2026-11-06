@@ -1,6 +1,8 @@
 import './style.css';
 
 // TODO allow font selection from browser fonts?
+// TODO sequential mode: all characters in ascii range
+//      sparse mode: specified characters one by one
 
 const padding = 1;
 
@@ -151,7 +153,7 @@ function generateFontHeader(
     const fixedHeight = Number(fixedHeightInput.value);
     const yOffset = Number(yOffsetInput.value) || 0;
 
-    const chars = Object.keys(glyphs).map(Number).sort();
+    const chars = Object.keys(glyphs).map(Number).sort((a, b) => Number(a) - Number(b));
     const firstChar = chars.at(0)!;
     const lastChar = chars.at(-1)!;
 
